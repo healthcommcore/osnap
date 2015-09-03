@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<title>DB Demo</title>
+	<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap-combined.min.css" rel="stylesheet">
+	<link href="http://michaelslaven.com/clients/osnap/wp-content/themes/osnap.1.0/style.css" rel="stylesheet">	
+</head>
+
+<body>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/js/bootstrap.min.js"></script>
+
+<?php 
+	//--------------------------------------------------------------------------
+	// php script for fetching data from mysql database
+	//--------------------------------------------------------------------------
+	$host = "localhost";
+	$user = "michaels_limread";
+	$pass = "2obese";			
+	$databaseName = "michaels_lime527";   
+
+	//--------------------------------------------------------------------------
+	// Connect to mysql database
+	//--------------------------------------------------------------------------
+	$con = mysql_connect($host,$user,$pass);
+	$dbs = mysql_select_db($databaseName, $con);
+
+	//--------------------------------------------------------------------------
+	// Query database for data
+	//--------------------------------------------------------------------------
+	// Use the query below to map limesurvey column names to question codes
+	/*
+	SELECT 
+	CONCAT(q.sid, 'X', q.gid, 'X', q.qid, IFNULL(sq.title,'')) AS sgq, 
+	CONCAT(q.title, IFNULL(sq.title,'')) AS fulltitle, q.question, q.type
+	FROM ls_questions AS q
+	LEFT JOIN ls_groups AS g ON q.sid = g.sid AND q.gid = g.gid 
+	LEFT JOIN ls_questions AS sq ON q.qid = sq.parent_qid 
+	WHERE g.sid = 974213 
+	AND q.type = 'Y'
+	AND q.parent_qid = 0
+	ORDER BY g.group_order, q.question_order, sq.question_order
+	*/
+	
+	// client IP address
+	$ip=$_SERVER['REMOTE_ADDR'];
+	echo "<b>client IP Address: ".$ip."</b>";
+	
+	$sql = "SELECT *
+				FROM ls_survey_974213 
+				WHERE ipaddr = '".$ip."' 
+				ORDER BY datestamp DESC
+				LIMIT 1
+				";	
+	
+	$result = mysql_query($sql); 
+	
+	while ($row = mysql_fetch_assoc($result)) {
+		
+		// get equation results
+		$eq01 = $row["974213X155X1732"];
+		$eq02 = $row["974213X156X1778"];
+		$eq03 = $row["974213X157X1779"];
+		$eq03a = $row['974213X157X1780'];
+		$eq04 = $row["974213X158X1786"];
+		$eq05 = $row["974213X159X1787"];
+		$eq06 = $row["974213X160X1789"];
+		$eq07 = $row["974213X161X1790"];
+		$eq09 = $row["974213X163X1796"];
+		$eq10 = $row["974213X167X1797"];
+		$eq11 = $row["974213X168X1798"];
+		$eq12 = $row["974213X164X1799"];
+		$eq13 = $row["974213X165X1806"];
+		$eq14 = $row["974213X166X1800"];
+
+		// does the program include snacks?
+		$q0801 = $row["974213X162X1679"];
+		
+		// determine documents
+		$eq0101 = $row["974213X155X1731"];
+		$eq0102 = $row["974213X155X1727"];
+		$eq0103 = $row["974213X155X1728"];
+		$eq0104 = $row["974213X155X1729"];
+		$eq0105 = $row["974213X155X1730"];
+		
+		$q010501 = $row["974213X155X1636SQ003"];
+		
+		$q0201 = $row["974213X156X1637"];
+		$q0202 = $row["974213X156X1638"];
+		$q0203 = $row["974213X156X1639"];
+		$q0204 = $row["974213X156X1640"];
+		$q0205 = $row["974213X156X1641"];
+		$q020501 = $row["974213X156X1642SQ001"];
+		
+		$q0301 = $row["974213X157X1643"];
+		$q0302 = $row["974213X157X1644"];
+		$q0303 = $row["974213X157X1645"];
+		$q0304 = $row["974213X157X1646"];
+		$q0305 = $row["974213X157X1647"];
+		$q030501 = $row["974213X157X1648SQ001"];
+		
+		$docs03 = "";
+		if ($eq0101 == 2) {$docs03 = $docs03."Parent newsletters or flyers<br/>";}
+		if ($eq0102 == 2) {$docs03 = $docs03."Handbook (parent, staff, general)<br/>";}
+		if ($eq0103 == 2) {$docs03 = $docs03."Schedules<br/>";}
+		if ($eq0104 == 2) {$docs03 = $docs03."Training materials<br/>";}
+		if ($eq0105 == 2) {$docs03 = $docs03."Other document: ".$q010501."<br/>";}
+		
+		?>
+		<br/><br/><hr/>
+		datestamp: <?php echo $row["datestamp"] ?><br/>
+		ipaddr: <?php echo $row["ipaddr"] ?></br>
+		days/wk: <?php echo $days_per_week = $row["974213X169X1723"] ?><br/>
+		eq0101: <?php echo $eq0101 ?><br/>
+		eq02: <?php echo $eq02 ?><br/>
+		eq03: <?php echo $eq03 ?><br/>
+		eq03a: <?php echo $eq03a ?><br/>
+		docs03: <?php echo $docs03 ?><br/>
+		
+
+		<div style="width:600px;margin:30px;border:1px solid gray;">
+		<table class="table table-striped" >
+			<thead>
+				<tr>
+					<td>OSNAP Standard</td>
+					<td>Policy Status</td>
+				<tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Include 30 minutes of moderate physical activity for every child every day (include outdoor activity if possible).</td>
+					<td>
+						<?php if ($eq03a==2) { 
+							echo "Meets goals, as written in the following document(s):<br/>";
+							echo $docs03;
+						} elseif ($eq03a==1) { 
+							echo "Partially meets goals, as written in the following document(s):<br/>";
+							echo $docs03;
+						} else { 
+							echo "Does not meet these goals.";						
+						} ?>
+					</td>
+				</tr>
+				<tr>
+					<td>Offer 20 minutes of vigorous physical activity 3 times per week.</td>
+					<td><?php echo ($eq04==2)?"Meets goals.":
+							(($eq04==1)?"Partially meets goals.":
+								"Does not meet these goals.");?> </td>
+				</tr>
+				<tr>
+					<td>Eliminate use of commercial broadcast TV/movies.</td>
+					<td><?php echo ($eq05=9)?"N/A":
+							(($eq05=2)?"Meets goals.":
+								(($eq05==1)?"Partially meets goals.":
+									"Does not meet these goals."));?> </td>
+				</tr>
+				<tr>
+					<td>Limit computer and digital device time to homework or instructional only.</td>
+					<td><?php echo ($eq06=9)?"N/A":
+							(($eq06=2)?"Meets goals.":
+								(($eq06==1)?"Partially meets goals.":
+									"Does not meet these goals."));?> </td>
+				</tr>
+				
+				<?php if ($q0801='Y') { ?>
+					<tr>
+						<td>Offer a fruit or vegetable option every day at snack.</td>
+						<td><?php echo ($eq09=2)?"Meets goals.":
+							(($eq09==1)?"Partially meets goals.":
+								"Does not meet these goals.");?> </td>
+					</tr>
+					<tr>
+						<td>When serving grains, serve whole grains.</td>
+						<td><?php echo ($eq10=2)?"Meets goals.":
+							(($eq09==1)?"Partially meets goals.":
+								"Does not meet these goals.");?> </td>
+					</tr>
+					<tr>
+						<td>Do not serve foods with trans fats. </td>
+						<td><?php echo ($eq11=2)?"Meets goals.":
+							(($eq09==1)?"Partially meets goals.":
+								"Does not meet these goals.");?> </td>
+					</tr>
+					<tr>
+						<td>Do not serve  sugar-sweetened drinks.</td>
+						<td><?php echo ($eq12=2)?"Meets goals.":
+							(($eq09==1)?"Partially meets goals.":
+								"Does not meet these goals.");?> </td>
+					</tr>
+					<tr>
+						<td>Offer water as a beverage at snack every day.</td>
+						<td><?php echo ($eq13=2)?"Meets goals.":
+							(($eq09==1)?"Partially meets goals.":
+								"Does not meet these goals.");?> </td>
+					</tr>
+					<tr>
+						<td>Do not allow sugar-sweetened drinks to be brought in from outside the snack program.</td>
+						<td><?php echo ($eq14=2)?"Meets goals.":
+							(($eq09==1)?"Partially meets goals.":
+								"Does not meet these goals.");?> </td>
+					</tr>					
+				
+				<?php } else { ?>
+					<tr>
+						<td>All snack related questions have been skipped.</td>
+						<td>N/A</td>
+					</tr>
+				<?php } ?>
+  
+	
+			</tbody>
+		</table>
+		</div>
+				
+		
+		
+	<?php	
+	}
+	?>
+
+
+</body>
+</html> 

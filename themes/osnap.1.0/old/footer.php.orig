@@ -1,0 +1,61 @@
+<div style="clear:both;"></div>
+
+</div> <!-- close container -->
+
+<div class="footerwidgets">
+
+	<!--
+	<div class="row">
+        
+            <div class="two columns">
+				<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('Footer Left') ) : ?> 
+                <?php endif; ?>
+            </div>
+            
+            <div class="two columns">
+				<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('Footer Mid Left') ) : ?>
+                <?php endif; ?>
+            </div>
+            
+            <div class="two columns">
+            	<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('Footer Middle') ) : ?>
+                <?php endif; ?>
+            </div>
+            
+            <div class="two columns">
+            	<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('Footer Mid Right') ) : ?>
+                <?php endif; ?>
+            </div>
+            
+            <div class="four columns">
+				<?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar('Footer Right') ) : ?>
+                <?php endif; ?>
+            </div>
+
+	</div>
+	-->
+	
+</div>
+
+<div class="footer">
+
+	<div class="row">
+		<div class="twelve columns">
+    
+    	<div class="footerleft">       
+            
+        </div>
+        
+        <div class="footerright">
+    		
+    	</div>
+		
+		</div>
+	</div>
+	
+</div> <!-- close container -->
+
+<?php wp_footer(); ?>
+
+</body>
+</html>

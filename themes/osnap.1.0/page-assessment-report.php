@@ -241,7 +241,29 @@ Template Name: Assessment Report
 				$policy_assessment_not_completed = "<div class=\'pol-ass-not-done\'><a href=\'".$site_url."/tools/policy-assessment/\'>Policy assessment</a><br/>not completed.</div>";
 
 				?>
+<?php
+  /*
+    * OSNAP Standards: $fields
+    * practice date, met or not met $my_practice_leads;
+    * policy date, met or not met $my_policy_lead;
+    * 
+   */
+    echo '<p><strong>' . count($fields) . ' fields</strong></p>';
+    //print_r($fields);
+    echo '<hr />';
+    print_r($my_practice_leads[0]);
+    $dates = array();
+    foreach( $my_practice_leads as $lead) {
+      $dates[] = date('m/d/Y', $lead[2]);
+    }
+?>
+<h3>Dave's report</h3>
 
+<?php
+  /*
+
+   */
+?>
 				<div class="report-top">
 					<div class="report-top-left">
 						<h3><?php echo $fields['practice_title'] ?></h3>
@@ -530,6 +552,7 @@ Template Name: Assessment Report
 					</tr>					
 				</tbody>
 				</table>
+
 
 				<!-- define jq function to hide policy divs if policy assessment hasn't been done -->
 				<?php if (!$has_policy_lead) { ?>

@@ -251,7 +251,15 @@ Template Name: Assessment Report
     echo '<p><strong>' . count($fields) . ' fields</strong></p>';
     //print_r($fields);
     echo '<hr />';
-    print_r($my_practice_leads[0]);
+    /*
+    $meta = GFAPI::get_form(4);
+    foreach($meta['fields'] as $field) {
+      print_r($field->label);
+    }
+     */
+    //print_r($my_practice_leads[0]);
+    $entries = GFAPI::get_entries(4);
+    print_r($entries[0][43]);
     $dates = array();
     foreach( $my_practice_leads as $lead) {
       $dates[] = date('m/d/Y', $lead[2]);

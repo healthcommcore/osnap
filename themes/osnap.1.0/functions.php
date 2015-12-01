@@ -1801,13 +1801,50 @@ function deleteAllMyEntries () {
 
 /*** BEGIN CUSTOM EDITS BY DAVE ROTHFARB, HEALTH COMMUNICATION CORE, DEC 2015 ***/
 
-add_action('wp_ajax_test_action', 'execute_test_action');
-
-function execute_test_action () {
-  if( isset($_POST['test_val']) ) {
-    $text = $_POST['test_val'];
-    echo "<h1>$text</h1>";
+function test_leads() {
+  global $my_practice_leads;
+  //print_r($my_practice_leads);
+  echo '<ul>';
+  foreach($my_practice_leads as $lead) {
+    echo '<li>' . $lead[2] . '</li>';
   }
+  echo '</ul>';
+}
+
+function get_all_assessment_questions() {
+  $questions_toignore = array(0, 1, 2, 3, 13, 14, 19, 20);
+  $filtered_questions = array();
+  $end =  31;
+  $meta = GFAPI::get_form(4);
+  for($i = 0; $i < $end; $i++) {
+    if( !in_array($i, $questions_toignore) ) {
+      $filtered_questions[] = $meta['fields'][$i]->label;
+    }
+  }
+  return $filtered_questions;
+}
+
+function build_assessment_q_and_a() {
+  $all_questions = get_all_assessment_questions();
+}
+
+function build_assessment_csv_data() {
+  global $my_practice_leads;
+  $assessment_q_and_a = build_assessment_q_and_a();
+}
+
+add_action('template_redirect', 'execute_csv_export');
+
+function execute_csv_export () {
+  if( $_SERVER['REQUEST_URI'] == '/tools/self-assessment-report/download-csv-report' ) {
+    //$csv_data = build_assessment_csv_data();
+
+    /* Insert csv download code here */
+  }
+  else if( $_SERVER['REQUEST_URI'] == '' ) {
+    /* Insert csv download code here */
+  }
+  else {}
 }
 
 ?>

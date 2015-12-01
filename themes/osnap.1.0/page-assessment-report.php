@@ -301,37 +301,13 @@ Template Name: Assessment Report
     $entry = GFAPI::get_entry(587);
     //print_r($entries[0]);
     //print_r($entry);
+    //echo '<h2>' . count($my_practice_leads) . ' entries</h2>';
+    test_leads();
 ?>
-<script>
-    (function($) {
-      $(document).ready(function() {
-        $('#export-test').on('click', function (e) {
-          e.preventDefault();
-          $.ajax({
-            url: '/wp-admin/admin-ajax.php',
-            data: 'action=test_action&test_val=ITS WORKING!',
-            method: 'post'
-          });
-          /*
-          var mysack = new sack('functions.php');
-          mysack.execute = 1;
-          mysack.method = 'POST';
-          mysack.setVar('test_val', 'ITS WORKING!');
-          mysack.onError = function () {
-            alert('<?php echo esc_js(__('Ajax error while selecting a form', 'gravityforms')) ?>')
-          };
-          mysack.runAJAX();
 
-          return true;
-           */
-        });
-      });
-    })(jQuery);
-    
-</script>
 <h3>Dave's report</h3>
 
-<a href="#" id="export-test">Export CSV</a>
+<a href="download-csv-report">Download CSV report</a>
 <?php
   /*
 

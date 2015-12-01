@@ -248,25 +248,90 @@ Template Name: Assessment Report
     * policy date, met or not met $my_policy_lead;
     * 
    */
-    echo '<p><strong>' . count($fields) . ' fields</strong></p>';
+
+    define('END_QUESTIONS', 31);
+    $questions_toignore = array(0, 1, 2, 3, 13, 14, 19, 20);
+      
     //print_r($fields);
     echo '<hr />';
-    /*
+
+    /* Assessment questions */
     $meta = GFAPI::get_form(4);
-    foreach($meta['fields'] as $field) {
-      print_r($field->label);
+    //echo '<ol>';
+    //foreach($meta['fields'] as $field) {
+    for($i = 0; $i < END_QUESTIONS; $i++) {
+      if( !in_array($i, $questions_toignore) ) {
+        //echo '<li>' . $meta['fields'][$i]->label . '</li>';
+      }
     }
+    //echo '</ol>';
+    //echo '<p><strong>' . count($meta['fields']) . ' fields</strong></p>';
+    /*
      */
-    //print_r($my_practice_leads[0]);
-    $entries = GFAPI::get_entries(4);
-    print_r($entries[0][43]);
+
+    /* 
+     * Assessment results 
+     * 43, 3, 42, 44, 45, 46, 8, 47, 48. 15. 14. 12. 49,
+     * 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
+     */
+    //print_r($my_practice_leads);
+    
+
+    /* 
+     * OSNAP standards titles 
+     * s1 - s9
+     */
+    //print_r($fields['s9']);
+    
+    /* 
+     * OSNAP standards results 
+     * 32 - 40
+     */
+    //print_r($my_practice_leads);
+    
+    /*
+     * Assessment result dates
+     */
     $dates = array();
     foreach( $my_practice_leads as $lead) {
       $dates[] = date('m/d/Y', $lead[2]);
     }
+    /* Assessment answers */
+    $entries = GFAPI::get_entries(4);
+    $entry = GFAPI::get_entry(587);
+    //print_r($entries[0]);
+    //print_r($entry);
 ?>
+<script>
+    (function($) {
+      $(document).ready(function() {
+        $('#export-test').on('click', function (e) {
+          e.preventDefault();
+          $.ajax({
+            url: '/wp-admin/admin-ajax.php',
+            data: 'action=test_action&test_val=ITS WORKING!',
+            method: 'post'
+          });
+          /*
+          var mysack = new sack('functions.php');
+          mysack.execute = 1;
+          mysack.method = 'POST';
+          mysack.setVar('test_val', 'ITS WORKING!');
+          mysack.onError = function () {
+            alert('<?php echo esc_js(__('Ajax error while selecting a form', 'gravityforms')) ?>')
+          };
+          mysack.runAJAX();
+
+          return true;
+           */
+        });
+      });
+    })(jQuery);
+    
+</script>
 <h3>Dave's report</h3>
 
+<a href="#" id="export-test">Export CSV</a>
 <?php
   /*
 

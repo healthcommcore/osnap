@@ -1798,4 +1798,16 @@ function deleteAllMyEntries () {
 
 ///////////// END CUSTOM EDITS BY //////////////////////////
 
+
+/*** BEGIN CUSTOM EDITS BY DAVE ROTHFARB, HEALTH COMMUNICATION CORE, DEC 2015 ***/
+
+add_action('wp_ajax_test_action', 'execute_test_action');
+
+function execute_test_action () {
+  if( isset($_POST['test_val']) ) {
+    $text = $_POST['test_val'];
+    echo "<h1>$text</h1>";
+  }
+}
+
 ?>

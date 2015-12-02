@@ -299,10 +299,11 @@ Template Name: Assessment Report
     /* Assessment answers */
     $entries = GFAPI::get_entries(4);
     $entry = GFAPI::get_entry(587);
-    //print_r($entries[0]);
+    //print_r($my_practice_leads);
     //print_r($entry);
-    //echo '<h2>' . count($my_practice_leads) . ' entries</h2>';
-    print_r(build_assessment_csv_data());
+    echo '<h2>' . test_csv() . '</h2>';
+    //print_r(build_assessment_q_and_a());
+    //test_csv();
 ?>
 
 <h3>Dave's report</h3>

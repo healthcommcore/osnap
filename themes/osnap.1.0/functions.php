@@ -1801,16 +1801,20 @@ function deleteAllMyEntries () {
 
 /*** BEGIN CUSTOM EDITS BY DAVE ROTHFARB, HEALTH COMMUNICATION CORE, DEC 2015 ***/
 
-function test_leads() {
+/*
+ */
+function test_csv() {
   global $my_practice_leads;
+  $csv_data = build_assessment_csv_data();
+  return export_csv_report($csv_data);
+}
   //print_r($my_practice_leads);
+/*
   echo '<ul>';
   foreach($my_practice_leads as $lead) {
     echo '<li>' . $lead[2] . '</li>';
   }
   echo '</ul>';
-}
-/*
  */
 
 function get_all_assessment_questions() {
@@ -1851,18 +1855,21 @@ function build_assessment_q_and_a() {
   $ordered_responses = get_ordered_assessment_results_array();
   $questions = get_all_assessment_questions();
   $q_and_a = array();
-  $dates = get_assessment_dates();
   for($i = 0; $i < count($questions); $i++) {
     //$questions[$i] = array();
+    /*
     $q_and_a[$i] = array(
       'question' => $questions[$i],
       'answers' => array()
     );
+     */
+    $q_and_a[$i] = array();
+    $q_and_a[$i][] = $questions[$i];
     //$questions[$i] = $my_practice_leads[$ordered_responses[$i]];
-    for($j = 0; $j < count($dates); $j++) {
+    for($j = 0; $j < count($my_practice_leads); $j++) {
       //$test[] = $my_practice_leads[$j];
       $current_lead = $my_practice_leads[$j];
-      $q_and_a[$i]['answers'][$dates[$j]] = $current_lead[$ordered_responses[$i]];
+      $q_and_a[$i][] = $current_lead[$ordered_responses[$i]];
       //$questions[$i][$dates[$j]] = $current_lead[$ordered_responses[$i]];
     }
     /*
@@ -1883,8 +1890,8 @@ add_action('template_redirect', 'execute_csv_export');
 
 function execute_csv_export () {
   if( $_SERVER['REQUEST_URI'] == '/tools/self-assessment-report/download-csv-report' ) {
-    //$csv_data = build_assessment_csv_data();
-
+    $csv_data = build_assessment_csv_data();
+    export_csv_report($csv_data);
     /* Insert csv download code here */
   }
   else if( $_SERVER['REQUEST_URI'] == '' ) {
@@ -1892,5 +1899,51 @@ function execute_csv_export () {
   }
   else {}
 }
+
+function make_file_name() {
+  global $my_practice_leads;
+  $user = wp_get_current_user()->user_login;
+  $max = 0;
+  foreach($my_practice_leads as $lead) {
+    if($lead['id'] > $max) {
+      $max = $lead['id'];
+    }
+  }
+  return $user . '_assessment_' . $max . '.csv';
+}
+
+function export_csv_report($data) {
+  $filename = make_file_name();
+  $file = dirname(__FILE__) . '/csv-assessment-reports/' . $filename;
+  if(!file_exists($file)) {
+    $result = create_csv($data, $file);
+    return $result;
+    //return 'This is a test!';
+  //$dir = fopen(
+  }
+  else {
+    return 'FILE EXISTS!';
+  }
+}
+
+function create_csv($data, $file) {
+  if($newfile = fopen($file, 'x')) {
+    $column_headings = get_assessment_dates();
+    array_unshift($column_headings, 'Question');
+    fputcsv($newfile, array('ASSESSMENT RESPONSES'));
+    fputcsv($newfile, $column_headings);
+      foreach ($data as $row) {
+        fputcsv($newfile, $row);
+      }
+    fclose($newfile);
+    return 'File was written';
+  }
+  else {
+    return 'File was not written';
+  }
+}
+
+    /*
+     */
 
 ?>

@@ -302,7 +302,7 @@ Template Name: Assessment Report
     //print_r($entries[0]);
     //print_r($entry);
     //echo '<h2>' . count($my_practice_leads) . ' entries</h2>';
-    test_leads();
+    print_r(build_assessment_csv_data());
 ?>
 
 <h3>Dave's report</h3>

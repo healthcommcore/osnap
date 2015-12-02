@@ -1810,6 +1810,8 @@ function test_leads() {
   }
   echo '</ul>';
 }
+/*
+ */
 
 function get_all_assessment_questions() {
   $questions_toignore = array(0, 1, 2, 3, 13, 14, 19, 20);
@@ -1824,13 +1826,57 @@ function get_all_assessment_questions() {
   return $filtered_questions;
 }
 
+function get_assessment_dates() {
+  global $my_practice_leads;
+  $dates = array();
+  foreach($my_practice_leads as $lead) { 
+    $dates[] = $lead[2];
+  }
+  return $dates;
+}
+/*
+ */
+
+function get_ordered_assessment_results_array() {
+  return array(
+    43, 3, 42, 44, 45, 46,
+    8, 47, 48, 15, 14, 12,
+    49, 18, 19, 20, 21, 22, 
+    23, 24, 25, 26, 27
+  );
+}
+
 function build_assessment_q_and_a() {
-  $all_questions = get_all_assessment_questions();
+  global $my_practice_leads;
+  $ordered_responses = get_ordered_assessment_results_array();
+  $questions = get_all_assessment_questions();
+  $q_and_a = array();
+  $dates = get_assessment_dates();
+  for($i = 0; $i < count($questions); $i++) {
+    //$questions[$i] = array();
+    $q_and_a[$i] = array(
+      'question' => $questions[$i],
+      'answers' => array()
+    );
+    //$questions[$i] = $my_practice_leads[$ordered_responses[$i]];
+    for($j = 0; $j < count($dates); $j++) {
+      //$test[] = $my_practice_leads[$j];
+      $current_lead = $my_practice_leads[$j];
+      $q_and_a[$i]['answers'][$dates[$j]] = $current_lead[$ordered_responses[$i]];
+      //$questions[$i][$dates[$j]] = $current_lead[$ordered_responses[$i]];
+    }
+    /*
+     */
+  }
+  return $q_and_a;
+  /*
+   */
 }
 
 function build_assessment_csv_data() {
   global $my_practice_leads;
   $assessment_q_and_a = build_assessment_q_and_a();
+  return $assessment_q_and_a;
 }
 
 add_action('template_redirect', 'execute_csv_export');

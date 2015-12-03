@@ -304,6 +304,7 @@ Template Name: Assessment Report
     //echo '<h2>' . test_csv() . '</h2>';
     //print_r(build_assessment_q_and_a());
     //print_r(test_csv());
+    execute_csv_export();
 ?>
 
 <h3>Dave's report</h3>

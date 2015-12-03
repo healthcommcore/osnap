@@ -1807,7 +1807,7 @@ function test_csv() {
   global $my_practice_leads;
   //return build_assessment_csv_data();
   $csv_data = build_assessment_csv_data();
-  return export_csv_report($csv_data);
+  export_csv_report($csv_data);
   //return $fields;
 }
   //print_r($my_practice_leads);
@@ -1911,21 +1911,22 @@ function build_assessment_csv_data() {
 add_action('template_redirect', 'execute_csv_export');
 
 function execute_csv_export () {
+  $filename = make_file_name();
   if( $_SERVER['REQUEST_URI'] == '/tools/self-assessment-report/download-csv-report' ) {
-    $csv_data = build_assessment_csv_data();
-    $file = export_csv_report($csv_data);
     header("Content-type: text/csv",true,200);
-    header("Content-Disposition: attachment; filename=" . make_file_name());
+    header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
     header("Pragma: no-cache");
     header("Expires: 0");
+    $csv_data = build_assessment_csv_data();
+    $file = export_csv_report($csv_data);
     readfile($file);
-    exit();
-    /* Insert csv download code here */
   }
   else if( $_SERVER['REQUEST_URI'] == '' ) {
-    /* Insert csv download code here */
   }
   else {}
+    /*
+     */
+  exit();
 }
 
 function make_file_name() {

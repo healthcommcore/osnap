@@ -303,7 +303,7 @@ Template Name: Assessment Report
     //print_r($entry);
     echo '<h2>' . test_csv() . '</h2>';
     //print_r(build_assessment_q_and_a());
-    //test_csv();
+    //print_r(test_csv());
 ?>
 
 <h3>Dave's report</h3>

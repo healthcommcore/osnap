@@ -1805,8 +1805,10 @@ function deleteAllMyEntries () {
  */
 function test_csv() {
   global $my_practice_leads;
+  //return build_assessment_csv_data();
   $csv_data = build_assessment_csv_data();
   return export_csv_report($csv_data);
+  //return $fields;
 }
   //print_r($my_practice_leads);
 /*
@@ -1850,12 +1852,10 @@ function get_ordered_assessment_results_array() {
   );
 }
 
-function build_assessment_q_and_a() {
+function build_assessment_array($data, $array_indices) {
   global $my_practice_leads;
-  $ordered_responses = get_ordered_assessment_results_array();
-  $questions = get_all_assessment_questions();
-  $q_and_a = array();
-  for($i = 0; $i < count($questions); $i++) {
+  $ordered_array = array();
+  for($i = 0; $i < count($data); $i++) {
     //$questions[$i] = array();
     /*
     $q_and_a[$i] = array(
@@ -1863,27 +1863,49 @@ function build_assessment_q_and_a() {
       'answers' => array()
     );
      */
-    $q_and_a[$i] = array();
-    $q_and_a[$i][] = $questions[$i];
+    $ordered_array[$i] = array();
+    $ordered_array[$i][] = $data[$i];
     //$questions[$i] = $my_practice_leads[$ordered_responses[$i]];
     for($j = 0; $j < count($my_practice_leads); $j++) {
       //$test[] = $my_practice_leads[$j];
       $current_lead = $my_practice_leads[$j];
-      $q_and_a[$i][] = $current_lead[$ordered_responses[$i]];
+      $ordered_array[$i][] = $current_lead[$array_indices[$i]];
       //$questions[$i][$dates[$j]] = $current_lead[$ordered_responses[$i]];
     }
     /*
      */
   }
-  return $q_and_a;
+  return $ordered_array;
   /*
    */
 }
 
+function get_all_osnap_standards() {
+  global $fields;
+  $array_order = array(
+    's1', 's2', 's3',
+    's4', 's5', 's6',
+    's7', 's8', 's9'
+  );
+  $standards = array();
+  foreach($array_order as $index) {
+    $standards[] = $fields[$index];
+  }
+  return $standards;
+}
+
 function build_assessment_csv_data() {
   global $my_practice_leads;
-  $assessment_q_and_a = build_assessment_q_and_a();
-  return $assessment_q_and_a;
+  $assessment_questions = get_all_assessment_questions();
+  $assessment_results_order = get_ordered_assessment_results_array();
+  $osnap_standards = get_all_osnap_standards();
+  $osnap_standards_order = range(32, 40);
+  $assessment_q_and_a = build_assessment_array($assessment_questions, $assessment_results_order);
+  $assessment_standards = build_assessment_array($osnap_standards, $osnap_standards_order);
+  return array(
+    'responses' => $assessment_q_and_a,
+    'standards' => $assessment_standards
+  );
 }
 
 add_action('template_redirect', 'execute_csv_export');
@@ -1932,9 +1954,13 @@ function create_csv($data, $file) {
     array_unshift($column_headings, 'Question');
     fputcsv($newfile, array('ASSESSMENT RESPONSES'));
     fputcsv($newfile, $column_headings);
-      foreach ($data as $row) {
-        fputcsv($newfile, $row);
-      }
+    foreach ($data['responses'] as $row) {
+      fputcsv($newfile, $row);
+    }
+    fputcsv($newfile, array('OSNAP STANDARDS'));
+    foreach ($data['standards'] as $row) {
+      fputcsv($newfile, $row);
+    }
     fclose($newfile);
     return 'File was written';
   }

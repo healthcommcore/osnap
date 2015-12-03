@@ -1913,7 +1913,13 @@ add_action('template_redirect', 'execute_csv_export');
 function execute_csv_export () {
   if( $_SERVER['REQUEST_URI'] == '/tools/self-assessment-report/download-csv-report' ) {
     $csv_data = build_assessment_csv_data();
-    export_csv_report($csv_data);
+    $file = export_csv_report($csv_data);
+    header("Content-type: text/csv",true,200);
+    header("Content-Disposition: attachment; filename=" . make_file_name());
+    header("Pragma: no-cache");
+    header("Expires: 0");
+    readfile($file);
+    exit();
     /* Insert csv download code here */
   }
   else if( $_SERVER['REQUEST_URI'] == '' ) {
@@ -1937,15 +1943,16 @@ function make_file_name() {
 function export_csv_report($data) {
   $filename = make_file_name();
   $file = dirname(__FILE__) . '/csv-assessment-reports/' . $filename;
+  $result = array();
   if(!file_exists($file)) {
     $result = create_csv($data, $file);
-    return $result;
-    //return 'This is a test!';
-  //$dir = fopen(
   }
+  /*
   else {
-    return 'FILE EXISTS!';
+    $result = read_csv($file);
   }
+   */
+  return $file;
 }
 
 function create_csv($data, $file) {
@@ -1962,13 +1969,23 @@ function create_csv($data, $file) {
       fputcsv($newfile, $row);
     }
     fclose($newfile);
-    return 'File was written';
+    return $newfile;
   }
   else {
     return 'File was not written';
   }
 }
 
+function read_csv($file) {
+  $data = array();
+  if($savedfile = fopen($file, 'r')) {
+    while( ($row = fgetcsv($savedfile)) !==FALSE ) {
+      $data[] = $row;
+    }
+    fclose($savedfile);
+  }
+  return $data;
+}
     /*
      */
 

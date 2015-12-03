@@ -301,7 +301,7 @@ Template Name: Assessment Report
     $entry = GFAPI::get_entry(587);
     //print_r($my_practice_leads);
     //print_r($entry);
-    echo '<h2>' . test_csv() . '</h2>';
+    //echo '<h2>' . test_csv() . '</h2>';
     //print_r(build_assessment_q_and_a());
     //print_r(test_csv());
 ?>

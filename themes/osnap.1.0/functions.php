@@ -1804,24 +1804,11 @@ function deleteAllMyEntries () {
 /*
  */
 function test_csv() {
-  global $my_practice_leads;
-  //return build_assessment_csv_data();
-  $csv_data = build_assessment_csv_data();
-  export_csv_report($csv_data);
-  //return $fields;
 }
-  //print_r($my_practice_leads);
-/*
-  echo '<ul>';
-  foreach($my_practice_leads as $lead) {
-    echo '<li>' . $lead[2] . '</li>';
-  }
-  echo '</ul>';
- */
 
 function get_user_data() {
   $user_data = array();
-  $user = $current_user->user_login;
+  $user = wp_get_current_user()->user_login;
   $all_data = GFAPI::get_entries(4);
   foreach($all_data as $data) {
     if($data['29'] == $user) {
@@ -1868,28 +1855,14 @@ function build_assessment_array($data, $array_indices) {
   $user_data = get_user_data();
   $ordered_array = array();
   for($i = 0; $i < count($data); $i++) {
-    //$questions[$i] = array();
-    /*
-    $q_and_a[$i] = array(
-      'question' => $questions[$i],
-      'answers' => array()
-    );
-     */
     $ordered_array[$i] = array();
     $ordered_array[$i][] = $data[$i];
-    //$questions[$i] = $my_practice_leads[$ordered_responses[$i]];
     for($j = 0; $j < count($user_data); $j++) {
-      //$test[] = $my_practice_leads[$j];
       $current_lead = $user_data[$j];
       $ordered_array[$i][] = $current_lead[$array_indices[$i]];
-      //$questions[$i][$dates[$j]] = $current_lead[$ordered_responses[$i]];
     }
-    /*
-     */
   }
   return $ordered_array;
-  /*
-   */
 }
 
 function get_all_osnap_standards() {
@@ -1941,7 +1914,7 @@ function execute_csv_export () {
 
 function make_file_name() {
   $user_data = get_user_data();
-  $user = $current_user->user_login;
+  $user = wp_get_current_user()->user_login;
   $max = 0;
   foreach($user_data as $lead) {
     if($lead['id'] > $max) {
@@ -1956,13 +1929,8 @@ function export_csv_report($data) {
   $file = dirname(__FILE__) . '/csv-assessment-reports/' . $filename;
   $result = array();
   if(!file_exists($file)) {
-    $result = create_csv($data, $file);
+    create_csv($data, $file);
   }
-  /*
-  else {
-    $result = read_csv($file);
-  }
-   */
   return $file;
 }
 
@@ -1980,7 +1948,6 @@ function create_csv($data, $file) {
       fputcsv($newfile, $row);
     }
     fclose($newfile);
-    return $newfile;
   }
   else {
     return 'File was not written';

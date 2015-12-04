@@ -1,0 +1,35 @@
+"ASSESSMENT RESPONSES"
+Question,2015-11-11,2015-11-12,2015-11-13
+"How many minutes do you think the typical child at your program was physically active today?",1,15,15
+"Did your program offer any physical activity on this day?",No,Yes,Yes
+"What is the MOST amount of physical activity time that was offered to any group of children today?",,15,15
+"What is the LEAST amount of physical activity time that was offered to any group of children today?",,1,1
+"How many children do you think were active when they attended physical activity time?",,100,100
+"How many minutes do you think the typical child at your program was engaged in vigorous physical activity (i.e. activity more than a walk) today?",0,15,1
+"Did your program offer any vigorous physical activity time  today?",No,Yes,Yes
+"What is the MOST amount of vigorous physical activity time that was offered to any group of children today?",,20,1
+"What is the LEAST amount of vigorous physical activity time that was offered to any group of children today?",,1,1
+"Did your program show any broadcast or cable TV or movies today?",Yes,No,No
+"Did you see any children using hand-held devices (for uses other than homework/instruction)?",Yes,Yes,Yes
+"Did your program offer any recreational (i.e. on the internet, entertainment) computer time today?",No,Yes,Yes
+"How much recreational computer time was allowed for each child?",,30,30
+"Was a fruit or vegetable served at snack?",No,Yes,Yes
+"Were any grains served at snack?",Yes,No,No
+"Were they snacks that contain a whole grain as the first ingredient?",No,,
+"Were drinks with sugar added like soda, sweetened teas, fruit punches, or sports drinks served at snack?",Yes,No,No
+"Was 100% juice served at snack?",No,Yes,Yes
+"Was this juice served in a container greater than 4oz?",,No,No
+"Was water served (with a pitcher or from a cooler) at snack?",Yes,No,No
+"For the children who were served water, how much do you think they drank?",some,,
+"How many kids consumed sugary drinks from outside the snack program (e.g. vending, home, etc.) during the afterschool day?",many,some,some
+"How many kids consumed food from outside the snack program during the afterschool day?",few,some,some
+"OSNAP STANDARDS"
+"Include 30 minutes of moderate physical activity for every child every day (include outdoor activity if possible).",no,no,no
+"Offer 20 minutes of vigorous physical activity 3 times per week.",no,no,no
+"Limit computer and digital device time to homework or instructional only.",no,no,no
+"Eliminate use of commercial broadcast TV/movies.",no,yes,yes
+"Offer a fruit or vegetable option every day at snack.",no,yes,yes
+"When serving grains, serve whole grains.",no,n-a,n-a
+"Do not serve sugar-sweetened drinks.",no,yes,yes
+"Offer water as a beverage at snack every day.",yes,no,no
+"Do not allow sugar-sweetened drinks to be brought in during program time",no,no,no

@@ -1819,6 +1819,18 @@ function test_csv() {
   echo '</ul>';
  */
 
+function get_user_data() {
+  $user_data = array();
+  $user = $current_user->user_login;
+  $all_data = GFAPI::get_entries(4);
+  foreach($all_data as $data) {
+    if($data['29'] == $user) {
+      $user_data[] = $data;
+    }
+  }
+  return $user_data;
+}
+
 function get_all_assessment_questions() {
   $questions_toignore = array(0, 1, 2, 3, 13, 14, 19, 20);
   $filtered_questions = array();
@@ -1833,9 +1845,9 @@ function get_all_assessment_questions() {
 }
 
 function get_assessment_dates() {
-  global $my_practice_leads;
+  $user_data = get_user_data();
   $dates = array();
-  foreach($my_practice_leads as $lead) { 
+  foreach($user_data as $lead) { 
     $dates[] = $lead[2];
   }
   return $dates;
@@ -1853,7 +1865,7 @@ function get_ordered_assessment_results_array() {
 }
 
 function build_assessment_array($data, $array_indices) {
-  global $my_practice_leads;
+  $user_data = get_user_data();
   $ordered_array = array();
   for($i = 0; $i < count($data); $i++) {
     //$questions[$i] = array();
@@ -1866,9 +1878,9 @@ function build_assessment_array($data, $array_indices) {
     $ordered_array[$i] = array();
     $ordered_array[$i][] = $data[$i];
     //$questions[$i] = $my_practice_leads[$ordered_responses[$i]];
-    for($j = 0; $j < count($my_practice_leads); $j++) {
+    for($j = 0; $j < count($user_data); $j++) {
       //$test[] = $my_practice_leads[$j];
-      $current_lead = $my_practice_leads[$j];
+      $current_lead = $user_data[$j];
       $ordered_array[$i][] = $current_lead[$array_indices[$i]];
       //$questions[$i][$dates[$j]] = $current_lead[$ordered_responses[$i]];
     }
@@ -1881,7 +1893,7 @@ function build_assessment_array($data, $array_indices) {
 }
 
 function get_all_osnap_standards() {
-  global $fields;
+  $fields = get_fields(519);
   $array_order = array(
     's1', 's2', 's3',
     's4', 's5', 's6',
@@ -1895,7 +1907,6 @@ function get_all_osnap_standards() {
 }
 
 function build_assessment_csv_data() {
-  global $my_practice_leads;
   $assessment_questions = get_all_assessment_questions();
   $assessment_results_order = get_ordered_assessment_results_array();
   $osnap_standards = get_all_osnap_standards();
@@ -1929,10 +1940,10 @@ function execute_csv_export () {
 }
 
 function make_file_name() {
-  global $my_practice_leads;
-  $user = wp_get_current_user()->user_login;
+  $user_data = get_user_data();
+  $user = $current_user->user_login;
   $max = 0;
-  foreach($my_practice_leads as $lead) {
+  foreach($user_data as $lead) {
     if($lead['id'] > $max) {
       $max = $lead['id'];
     }

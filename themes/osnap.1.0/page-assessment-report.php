@@ -242,74 +242,8 @@ Template Name: Assessment Report
 
 				?>
 <?php
-  /*
-    * OSNAP Standards: $fields
-    * practice date, met or not met $my_practice_leads;
-    * policy date, met or not met $my_policy_lead;
-    * 
-   */
+  ?>
 
-    define('END_QUESTIONS', 31);
-    $questions_toignore = array(0, 1, 2, 3, 13, 14, 19, 20);
-      
-    //print_r($fields);
-    echo '<hr />';
-
-    /* Assessment questions */
-    $meta = GFAPI::get_form(4);
-    //echo '<ol>';
-    //foreach($meta['fields'] as $field) {
-    for($i = 0; $i < END_QUESTIONS; $i++) {
-      if( !in_array($i, $questions_toignore) ) {
-        //echo '<li>' . $meta['fields'][$i]->label . '</li>';
-      }
-    }
-    //echo '</ol>';
-    //echo '<p><strong>' . count($meta['fields']) . ' fields</strong></p>';
-    /*
-     */
-
-    /* 
-     * Assessment results 
-     * 43, 3, 42, 44, 45, 46, 8, 47, 48. 15. 14. 12. 49,
-     * 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
-     */
-    //print_r($my_practice_leads);
-    
-
-    /* 
-     * OSNAP standards titles 
-     * s1 - s9
-     */
-    //print_r($fields['s9']);
-    
-    /* 
-     * OSNAP standards results 
-     * 32 - 40
-     */
-    //print_r($my_practice_leads);
-    
-    /*
-     * Assessment result dates
-     */
-    $dates = array();
-    foreach( $my_practice_leads as $lead) {
-      $dates[] = date('m/d/Y', $lead[2]);
-    }
-    /* Assessment answers */
-    $entries = GFAPI::get_entries(4);
-    $entry = GFAPI::get_entry(587);
-    //print_r($my_practice_leads);
-    //print_r($entry);
-    //echo '<h2>' . test_csv() . '</h2>';
-    //print_r(build_assessment_q_and_a());
-    //print_r(test_csv());
-    //execute_csv_export();
-?>
-
-<h3>Dave's report</h3>
-
-<a href="download-csv-report">Download CSV report</a>
 <?php
   /*
 
@@ -322,6 +256,9 @@ Template Name: Assessment Report
 					</div>
 					
 					<div class="report-top-right">
+            <a href="download-csv-report">
+              <img src="<?php echo $template_url?>/images/csv_download_icon.png" alt="CSV download icon" />
+            </a>
 						<a href="" onClick="window.print()">
 							<img border="0" src="<?php echo $template_url?>/images/print.png" alt="Printer friendly report" width="38" height="38">
 						</a>

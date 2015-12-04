@@ -3578,13 +3578,17 @@ div.remember {
 	margin-left: 16px;
 	margin-top: 4px;
 	}
+.report-top-right,
+.report-top-right a {
+  float: left;
+  margin: 0 9px;
+}
 .report-top-right {
-	width: 60px;
 	float: right;
 	margin-top: 10px;
 	}
 .report-top-left {
-	width: 600px;
+	width: 590px;
 	float: left;
 	}
 	

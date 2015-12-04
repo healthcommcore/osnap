@@ -1913,6 +1913,7 @@ add_action('template_redirect', 'execute_csv_export');
 function execute_csv_export () {
   $filename = make_file_name();
   if( $_SERVER['REQUEST_URI'] == '/tools/self-assessment-report/download-csv-report' ) {
+    header('Location: http://www.healthcommcore.org');
     header("Content-type: text/csv",true,200);
     header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
     header("Pragma: no-cache");
@@ -1920,13 +1921,11 @@ function execute_csv_export () {
     $csv_data = build_assessment_csv_data();
     $file = export_csv_report($csv_data);
     readfile($file);
+    exit();
   }
   else if( $_SERVER['REQUEST_URI'] == '' ) {
   }
   else {}
-    /*
-     */
-  exit();
 }
 
 function make_file_name() {

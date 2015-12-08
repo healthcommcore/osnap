@@ -242,6 +242,7 @@ Template Name: Assessment Report
 
 				?>
 <?php
+        //print_r(test_csv());
   ?>
 
 <?php
